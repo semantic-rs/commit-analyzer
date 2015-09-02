@@ -61,7 +61,7 @@ fn minor_commit() {
 
 #[test]
 fn major_commit() {
-    let commits = vec!["feat: This commits breaks something\r\n\r\nBREAKING CHANGE: breaks things"];
+    let commits = vec!["feat: This commits breaks something\nBREAKING CHANGE: breaks things"];
     assert_eq!(Unknown, analyze(&commits).unwrap());
 }
 

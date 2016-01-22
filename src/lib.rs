@@ -14,7 +14,7 @@ pub enum CommitType {
 use CommitType::*;
 
 pub fn analyze_single(commit: &str) -> Result<CommitType, Error> {
-    let clog = Clog::new().unwrap();
+    let clog = Clog::new().expect("Clog initialization failed");
     let commit = clog.parse_raw_commit(commit);
 
     if commit.breaks.len() > 0 {
@@ -32,14 +32,13 @@ pub fn analyze_single(commit: &str) -> Result<CommitType, Error> {
 
 pub fn analyze(commits: &[&str]) -> Result<CommitType, Error> {
     let commit_type = commits.into_iter()
-                             .map(|commit| analyze_single(commit).unwrap())
+                             .map(|commit| analyze_single(commit).expect("Can't analyze commit"))
                              .map(|commit| {
-                                 println!("commit: {:?}", commit);
                                  commit
                              })
                              .max();
 
-    Ok(commit_type.unwrap())
+    Ok(commit_type.unwrap_or(Unknown))
 }
 
 #[test]
